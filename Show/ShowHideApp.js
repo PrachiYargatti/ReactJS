@@ -8,14 +8,14 @@ class ShowHide extends Component {
   onShowHideFirstname = () => {
     const {firstNameStatus} = this.state
     this.setState({
-      firstNameStatus: firstNameStatus === 'none' ? 'block' : 'none',
+      firstNameStatus: firstNameStatus === 'none' ? '' : 'none',
     })
   }
 
   onShowHideLastname = () => {
     const {lastNameStatus} = this.state
     this.setState({
-      lastNameStatus: lastNameStatus === 'none' ? 'block' : 'none',
+      lastNameStatus: lastNameStatus === 'none' ? '' : 'none',
     })
   }
 
