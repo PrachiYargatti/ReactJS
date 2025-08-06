@@ -3,24 +3,22 @@ import {Component} from 'react'
 import './index.css'
 
 class ShowHide extends Component {
-  state = {firstNameStatus: 'none', lastNameStatus: 'none'}
+  state = {firstNameVisible: false, lastNameVisible: false}
 
   onShowHideFirstname = () => {
-    const {firstNameStatus} = this.state
-    this.setState({
-      firstNameStatus: firstNameStatus === 'none' ? '' : 'none',
-    })
+    this.setState(prevState => ({
+      firstNameVisible: !prevState.firstNameVisible,
+    }))
   }
 
   onShowHideLastname = () => {
-    const {lastNameStatus} = this.state
-    this.setState({
-      lastNameStatus: lastNameStatus === 'none' ? '' : 'none',
-    })
+    this.setState(prevState => ({
+      lastNameVisible: !prevState.lastNameVisible,
+    }))
   }
 
   render() {
-    const {firstNameStatus, lastNameStatus} = this.state
+    const {firstNameVisible, lastNameVisible} = this.state
     return (
       <div className="container">
         <h1 className="head">Show/Hide</h1>
@@ -33,9 +31,7 @@ class ShowHide extends Component {
             >
               Show/Hide Firstname
             </button>
-            <p style={{display: firstNameStatus}} className="card">
-              Joe
-            </p>
+            {firstNameVisible && <p className="card">Joe</p>}
           </div>
           <div className="button_card_container">
             <button
@@ -45,9 +41,7 @@ class ShowHide extends Component {
             >
               Show/Hide Lastname
             </button>
-            <p style={{display: lastNameStatus}} className="card">
-              Jonas
-            </p>
+            {lastNameVisible && <p className="card">Jonas</p>}
           </div>
         </div>
       </div>
