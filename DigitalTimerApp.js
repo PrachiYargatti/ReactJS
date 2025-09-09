@@ -107,16 +107,17 @@ class DigitalTimer extends Component {
                   src={playPauseIcon}
                   className="icon-style"
                 />
+                {playPauseText}
               </button>
-              <p className="para">{playPauseText}</p>
+
               <button type="button" className="button" onClick={this.onReset}>
                 <img
                   src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
                   alt="reset icon"
                   className="icon-style"
                 />
+                Reset
               </button>
-              <p>Reset</p>
             </div>
 
             <p className="set-limit-para">Set Timer limit</p>
@@ -147,6 +148,7 @@ class DigitalTimer extends Component {
 }
 
 export default DigitalTimer
+
 
 //src/components/DigitalTimer/index.css
 .bg-container {
@@ -210,6 +212,7 @@ export default DigitalTimer
 .button {
   background: transparent;
   border: 0;
+  cursor: pointer;
 }
 .btn {
   font-size: 35px;
