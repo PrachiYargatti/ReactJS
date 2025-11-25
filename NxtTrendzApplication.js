@@ -1388,14 +1388,1537 @@ export default AllProductsSection
   }
 }
 
-//FilterGroup/index.js
+//FiltersGroup/index.js
+import {BsSearch} from 'react-icons/bs'
 
-//FilterGroup/index.css
+import './index.css'
+
+const FiltersGroup = props => {
+  const renderRatingsFiltersList = () => {
+    const {ratingsList} = props
+
+    return ratingsList.map(rating => {
+      const {changeRating, activeRatingId} = props
+      const onClickRatingItem = () => changeRating(rating.ratingId)
+
+      const ratingClassName =
+        activeRatingId === rating.ratingId ? `and-up active-rating` : `and-up`
+
+      return (
+        <li
+          className="rating-item"
+          key={rating.ratingId}
+          onClick={onClickRatingItem}
+        >
+          <img
+            src={rating.imageUrl}
+            alt={`rating ${rating.ratingId}`}
+            className="rating-image"
+          />
+          <p className={ratingClassName}>& up</p>
+        </li>
+      )
+    })
+  }
+
+  const renderRatingsFilters = () => (
+    <div>
+      <h1 className="rating-heading">Rating</h1>
+      <ul className="ratings-list">{renderRatingsFiltersList()}</ul>
+    </div>
+  )
+
+  const renderCategoriesList = () => {
+    const {categoryOptions} = props
+
+    return categoryOptions.map(category => {
+      const {changeCategory, activeCategoryId} = props
+      const onClickCategoryItem = () => changeCategory(category.categoryId)
+      const isActive = category.categoryId === activeCategoryId
+      const categoryClassName = isActive
+        ? `category-name active-category-name`
+        : `category-name`
+
+      return (
+        <li
+          className="category-item"
+          key={category.categoryId}
+          onClick={onClickCategoryItem}
+        >
+          <p className={categoryClassName}>{category.name}</p>
+        </li>
+      )
+    })
+  }
+
+  const renderProductCategories = () => (
+    <>
+      <h1 className="category-heading">Category</h1>
+      <ul className="categories-list">{renderCategoriesList()}</ul>
+    </>
+  )
+
+  const onEnterSearchInput = event => {
+    const {enterSearchInput} = props
+    if (event.key === 'Enter') {
+      enterSearchInput()
+    }
+  }
+
+  const onChangeSearchInput = event => {
+    const {changeSearchInput} = props
+    changeSearchInput(event.target.value)
+  }
+
+  const renderSearchInput = () => {
+    const {searchInput} = props
+    return (
+      <div className="search-input-container">
+        <input
+          value={searchInput}
+          type="search"
+          className="search-input"
+          placeholder="Search"
+          onChange={onChangeSearchInput}
+          onKeyDown={onEnterSearchInput}
+        />
+        <BsSearch className="search-icon" />
+      </div>
+    )
+  }
+
+  const {clearFilters} = props
+
+  return (
+    <div className="filters-group-container">
+      {renderSearchInput()}
+      {renderProductCategories()}
+      {renderRatingsFilters()}
+      <button
+        type="button"
+        className="clear-filters-btn"
+        onClick={clearFilters}
+      >
+        Clear Filters
+      </button>
+    </div>
+  )
+}
+
+export default FiltersGroup
+
+//FiltersGroup/index.css
+.filters-group-container {
+  margin-top: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .filters-group-container {
+    width: 25%;
+    max-width: 280px;
+    min-width: 240px;
+    margin-top: 48px;
+    flex-shrink: 0;
+  }
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+}
+
+.search-input {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  flex-grow: 1;
+}
+
+.search-icon {
+  color: #475569;
+  width: 20px;
+  height: 20px;
+}
+
+.category-heading {
+  color: #12022f;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 24px;
+}
+
+@media screen and (min-width: 768px) {
+  .category-heading {
+    margin-top: 32px;
+  }
+}
+
+.categories-list {
+  padding-left: 0;
+}
+
+.category-item {
+  list-style-type: none;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .category-item {
+    margin-top: 24px;
+  }
+}
+
+.category-name {
+  color: #64748b;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .category-name {
+    font-size: 18px;
+  }
+}
+
+.active-category-name {
+  color: #0967d2;
+}
+
+.rating-heading {
+  color: #12022f;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 18px;
+}
+
+.ratings-list {
+  padding-left: 0px;
+}
+
+.rating-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.rating-image {
+  max-width: 152px;
+  height: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .rating-image {
+    height: 24px;
+  }
+}
+
+.and-up {
+  color: #64748b;
+  font-family: Roboto;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .and-up {
+    font-size: 18px;
+    margin-left: 14px;
+  }
+}
+
+.active-rating {
+  color: #0967d2;
+}
+
+.clear-filters-btn {
+  background-color: #ffffff;
+  color: #0967d2;
+  font-family: 'Roboto';
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid #0967d2;
+  padding-top: 8px;
+  padding-left: 12px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  margin-top: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .clear-filters-btn {
+    font-size: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 32px;
+  }
+}
 
 //ProductCard/index.js
+import {Link} from 'react-router-dom'
+
+import './index.css'
+
+const ProductCard = props => {
+  const {productData} = props
+  const {title, brand, imageUrl, rating, price, id} = productData
+
+  return (
+    <Link to={`/products/${id}`} className="link-item">
+      <li className="product-item">
+        <img src={imageUrl} alt="product" className="thumbnail" />
+        <h1 className="title">{title}</h1>
+        <p className="brand">by {brand}</p>
+        <div className="product-details">
+          <p className="price">Rs {price}/-</p>
+          <div className="rating-container">
+            <p className="rating">{rating}</p>
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+              alt="star"
+              className="star"
+            />
+          </div>
+        </div>
+      </li>
+    </Link>
+  )
+}
+export default ProductCard
 
 //ProductCard/index.css
+.link-item {
+  text-decoration: none;
+  margin-bottom: 48px;
+  width: 350px;
+  flex-grow: 0;
+  flex-shrink: 1;
+  margin-right: 20px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .link-item {
+    width: 300px;
+  }
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.thumbnail {
+  width: 100%;
+  max-height: 350px;
+  border-radius: 6px;
+}
+
+.title {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.brand {
+  color: #594d6d;
+  font-family: 'Roboto';
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.product-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2px;
+}
+
+.price {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  background-color: #3b82f6;
+  border-radius: 6px;
+  padding: 6px 16px;
+}
+
+.rating {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 4px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.star {
+  height: 20px;
+  width: 20px;
+  margin-bottom: 3px;
+}
 
 //ProductsHeader/index.js
+import {BsFilterRight} from 'react-icons/bs'
+
+import './index.css'
+
+const ProductsHeader = props => {
+  const onChangeSortby = event => {
+    const {changeSortby} = props
+    changeSortby(event.target.value)
+  }
+
+  const {sortbyOptions, activeOptionId} = props
+  return (
+    <div className="products-header">
+      <h1 className="products-list-heading">All Products</h1>
+      <div className="sort-by-container">
+        <BsFilterRight className="sort-by-icon" />
+        <p className="sort-by">Sort by</p>
+        <select
+          className="sort-by-select"
+          value={activeOptionId}
+          onChange={onChangeSortby}
+        >
+          {sortbyOptions.map(eachOption => (
+            <option
+              key={eachOption.optionId}
+              value={eachOption.optionId}
+              className="select-option"
+            >
+              {eachOption.displayText}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  )
+}
+
+export default ProductsHeader
 
 //ProductsHeader/index.css
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 768px) {
+  .products-header {
+    margin-top: 32px;
+  }
+}
+
+.products-list-heading {
+  color: #475569;
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 768px) {
+  .products-list-heading {
+    font-size: 32px;
+  }
+}
+
+.sort-by-container {
+  display: flex;
+  align-items: center;
+}
+
+.sort-by-icon {
+  font-size: 24px;
+  color: #475569;
+  margin-right: 6px;
+}
+
+.sort-by {
+  color: #475569;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.sort-by-select {
+  color: #475569;
+  background-color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  padding: 12px;
+  outline: none;
+  cursor: pointer;
+}
+
+.select-option {
+  color: #7e858e;
+  font-family: 'Roboto';
+  font-size: 14px;
+}
+
+//SimilarProductItem/index.js
+import './index.css'
+
+const SimilarProductItem = props => {
+  const {productDetails} = props
+  const {title, brand, imageUrl, rating, price} = productDetails
+
+  return (
+    <li className="similar-product-item">
+      <img
+        src={imageUrl}
+        className="similar-product-image"
+        alt={`similar product ${title}`}
+      />
+      <p className="similar-product-title">{title}</p>
+      <p className="similar-products-brand">by {brand}</p>
+      <div className="similar-product-price-rating-container">
+        <p className="similar-product-price">Rs {price}/-</p>
+        <div className="similar-product-rating-container">
+          <p className="similar-product-rating">{rating}</p>
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+            alt="star"
+            className="similar-product-star"
+          />
+        </div>
+      </div>
+    </li>
+  )
+}
+
+export default SimilarProductItem
+
+//SimilarProductItem/index.css
+.similar-product-item {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+}
+
+@media screen and (min-width: 768px) {
+  .similar-product-item {
+    width: 200px;
+    margin-right: 64px;
+  }
+}
+
+.similar-product-image {
+  width: 200px;
+  border-radius: 8px;
+}
+
+.similar-product-title {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.similar-products-brand {
+  color: #594d6d;
+  font-family: 'Roboto';
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.similar-product-price-rating-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+}
+
+.similar-product-price {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.similar-product-rating-container {
+  display: flex;
+  align-items: center;
+  background-color: #3b82f6;
+  border-radius: 6px;
+  padding-left: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 8px;
+}
+
+.similar-product-rating {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 4px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.similar-product-star {
+  height: 14px;
+  width: 14px;
+}
+
+//ProtectedRoute/index.js
+import {Redirect, Route} from 'react-router-dom'
+import Cookie from 'js-cookie'
+
+const ProtectedRoute = props => {
+  const token = Cookie.get('jwt_token')
+  if (token === undefined) {
+    return <Redirect to="/login" />
+  }
+  return <Route {...props} />
+}
+
+export default ProtectedRoute
+
+//ProductItemDetails/index.js
+import {Component} from 'react'
+import Cookies from 'js-cookie'
+import Loader from 'react-loader-spinner'
+import {BsPlusSquare, BsDashSquare} from 'react-icons/bs'
+
+import CartContext from '../../context/CartContext'
+
+import Header from '../Header'
+import SimilarProductItem from '../SimilarProductItem'
+
+import './index.css'
+
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+}
+
+class ProductItemDetails extends Component {
+  state = {
+    productData: {},
+    similarProductsData: [],
+    apiStatus: apiStatusConstants.initial,
+    quantity: 1,
+  }
+
+  componentDidMount() {
+    this.getProductData()
+  }
+
+  getFormattedData = data => ({
+    availability: data.availability,
+    brand: data.brand,
+    description: data.description,
+    id: data.id,
+    imageUrl: data.image_url,
+    price: data.price,
+    rating: data.rating,
+    title: data.title,
+    totalReviews: data.total_reviews,
+  })
+
+  getProductData = async () => {
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
+
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
+    const jwtToken = Cookies.get('jwt_token')
+    const apiUrl = `https://apis.ccbp.in/products/${id}`
+    const options = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: 'GET',
+    }
+    const response = await fetch(apiUrl, options)
+    if (response.ok) {
+      const fetchedData = await response.json()
+      const updatedData = this.getFormattedData(fetchedData)
+      const updatedSimilarProductsData = fetchedData.similar_products.map(
+        eachSimilarProduct => this.getFormattedData(eachSimilarProduct),
+      )
+      this.setState({
+        productData: updatedData,
+        similarProductsData: updatedSimilarProductsData,
+        apiStatus: apiStatusConstants.success,
+      })
+    }
+    if (response.status === 404) {
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
+      })
+    }
+  }
+
+  renderLoadingView = () => (
+    <div className="products-details-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureView = () => (
+    <div className="product-details-error-view-container">
+      <img
+        alt="error view"
+        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-error-view-img.png"
+        className="error-view-image"
+      />
+      <h1 className="product-not-found-heading">Product Not Found</h1>
+      <button type="button" className="button">
+        Continue Shopping
+      </button>
+    </div>
+  )
+
+  onDecrementQuantity = () => {
+    const {quantity} = this.state
+    if (quantity > 1) {
+      this.setState(prevState => ({quantity: prevState.quantity - 1}))
+    }
+  }
+
+  onIncrementQuantity = () => {
+    this.setState(prevState => ({quantity: prevState.quantity + 1}))
+  }
+
+  renderProductDetailsView = () => (
+    <CartContext.Consumer>
+      {value => {
+        const {productData, quantity, similarProductsData} = this.state
+        const {
+          availability,
+          brand,
+          description,
+          imageUrl,
+          price,
+          rating,
+          title,
+          totalReviews,
+        } = productData
+        const {addCartItem} = value
+        const onClickAddToCart = () => {
+          addCartItem({...productData, quantity})
+        }
+
+        return (
+          <div className="product-details-success-view">
+            <div className="product-details-container">
+              <img src={imageUrl} alt="product" className="product-image" />
+              <div className="product">
+                <h1 className="product-name">{title}</h1>
+                <p className="price-details">Rs {price}/-</p>
+                <div className="rating-and-reviews-count">
+                  <div className="rating-container">
+                    <p className="rating">{rating}</p>
+                    <img
+                      src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+                      alt="star"
+                      className="star"
+                    />
+                  </div>
+                  <p className="reviews-count">{totalReviews} Reviews</p>
+                </div>
+                <p className="product-description">{description}</p>
+                <div className="label-value-container">
+                  <p className="label">Available:</p>
+                  <p className="value">{availability}</p>
+                </div>
+                <div className="label-value-container">
+                  <p className="label">Brand:</p>
+                  <p className="value">{brand}</p>
+                </div>
+                <hr className="horizontal-line" />
+                <div className="quantity-container">
+                  <button
+                    type="button"
+                    className="quantity-controller-button"
+                    onClick={this.onDecrementQuantity}
+                  >
+                    <BsDashSquare className="quantity-controller-icon" />
+                  </button>
+                  <p className="quantity">{quantity}</p>
+                  <button
+                    type="button"
+                    className="quantity-controller-button"
+                    onClick={this.onIncrementQuantity}
+                  >
+                    <BsPlusSquare className="quantity-controller-icon" />
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="button add-to-cart-btn"
+                  onClick={onClickAddToCart}
+                >
+                  ADD TO CART
+                </button>
+              </div>
+            </div>
+            <h1 className="similar-products-heading">Similar Products</h1>
+            <ul className="similar-products-list">
+              {similarProductsData.map(eachSimilarProduct => (
+                <SimilarProductItem
+                  productDetails={eachSimilarProduct}
+                  key={eachSimilarProduct.id}
+                />
+              ))}
+            </ul>
+          </div>
+        )
+      }}
+    </CartContext.Consumer>
+  )
+
+  renderProductDetails = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.renderProductDetailsView()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
+      case apiStatusConstants.inProgress:
+        return this.renderLoadingView()
+      default:
+        return null
+    }
+  }
+
+  render() {
+    return (
+      <>
+        <Header />
+        <div className="product-item-details-container">
+          {this.renderProductDetails()}
+        </div>
+      </>
+    )
+  }
+}
+
+export default ProductItemDetails
+
+//ProductItemDetails/index.css
+.product-item-details-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+@media screen and (min-width: 768px) {
+  .product-item-details-container {
+    margin-top: 64px;
+  }
+}
+
+.product-details-success-view {
+  width: 85%;
+  max-width: 550px;
+}
+
+@media screen and (min-width: 768px) {
+  .product-details-success-view {
+    width: 80%;
+    max-width: 1110px;
+  }
+}
+
+.product-details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  .product-details-container {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+}
+
+.product-image {
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .product-image {
+    width: 48%;
+    max-width: 540px;
+    max-height: 576px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .product {
+    width: 48%;
+  }
+}
+
+.product-name {
+  color: #3e4c59;
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 500;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .product-name {
+    font-size: 48px;
+    margin-top: 0px;
+  }
+}
+
+.price-details {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.rating-and-reviews-count {
+  display: flex;
+  align-items: center;
+}
+
+.reviews-count {
+  color: #12022f;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  margin-left: 12px;
+}
+
+.product-description {
+  color: #616e7c;
+  font-family: 'Roboto';
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+@media screen and (min-width: 768px) {
+  .product-description {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+}
+
+.label-value-container {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.label {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .label {
+    font-size: 18px;
+  }
+}
+
+.value {
+  color: #616e7c;
+  font-family: 'Roboto';
+  font-size: 16px;
+  margin-top: 0;
+  margin-left: 8px;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .value {
+    font-size: 18px;
+  }
+}
+
+.horizontal-line {
+  border-top: 1px solid #cbced2;
+  margin: 0;
+}
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controller-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.quantity-controller-icon {
+  color: #616e7c;
+  width: 16px;
+  height: 16px;
+}
+
+.quantity {
+  color: #616e7c;
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+@media screen and (min-width: 768px) {
+  .quantity {
+    font-size: 24px;
+  }
+}
+
+.button {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 4px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+  outline: none;
+  cursor: pointer;
+}
+
+.add-to-cart-btn {
+  font-size: 12px;
+  margin-bottom: 32px;
+}
+
+@media screen and (min-width: 768px) {
+  .add-to-cart-btn {
+    font-size: 14px;
+    margin-bottom: 48px;
+  }
+}
+
+.similar-products-heading {
+  color: #3e4c59;
+  font-family: 'Roboto';
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .similar-products-heading {
+    font-size: 32px;
+  }
+}
+
+.similar-products-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-left: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .similar-products-list {
+    margin-top: 24px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .similar-products-list {
+    flex-direction: row;
+  }
+}
+
+.products-details-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.product-details-error-view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.error-view-image {
+  width: 300px;
+  height: 165px;
+}
+
+@media screen and (min-width: 768px) {
+  .error-view-image {
+    width: 540px;
+    height: 290px;
+  }
+}
+
+.product-not-found-heading {
+  color: #1e293b;
+  font-family: 'Roboto';
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 48px;
+}
+
+@media screen and (min-width: 768px) {
+  .product-not-found-heading {
+    font-size: 48px;
+  }
+}
+
+//Cart/index.js
+import Header from '../Header'
+import CartListView from '../CartListView'
+
+import './index.css'
+
+const Cart = () => (
+  <>
+    <Header />
+    <div className="cart-container">
+      <div className="cart-content-container">
+        <h1 className="cart-heading">My Cart</h1>
+        <CartListView />
+      </div>
+    </div>
+  </>
+)
+export default Cart
+
+//Cart/index.css
+.cart-container {
+  display: flex;
+  justify-content: center;
+  min-height: 75vh;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-container {
+    min-height: 90vh;
+  }
+}
+
+.cart-content-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 1110px;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-content-container {
+    width: 80%;
+    max-width: 1110px;
+  }
+}
+
+.cart-heading {
+  color: #3e4c59;
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-heading {
+    font-size: 48px;
+  }
+}
+
+//CartListView/index.js
+import CartItem from '../CartItem'
+import CartContext from '../../context/CartContext'
+
+import './index.css'
+
+const CartListView = () => (
+  <CartContext.Consumer>
+    {value => {
+      const {cartList} = value
+      return (
+        <ul className="cart-list">
+          {cartList.map(eachCartItem => (
+            <CartItem key={eachCartItem.id} cartItemDetails={eachCartItem} />
+          ))}
+        </ul>
+      )
+    }}
+  </CartContext.Consumer>
+)
+
+export default CartListView
+
+//CartListView/index.css
+.cart-list {
+  padding-left: 0px;
+}
+
+//CartItem/index.js
+import {BsPlusSquare, BsDashSquare} from 'react-icons/bs'
+import {AiFillCloseCircle} from 'react-icons/ai'
+
+import CartContext from '../../context/CartContext'
+
+import './index.css'
+
+const CartItem = props => (
+  <CartContext.Consumer>
+    {value => {
+      const {deleteCartItem} = value
+      const {cartItemDetails} = props
+      const {id, title, brand, quantity, price, imageUrl} = cartItemDetails
+      const onDeleteCartItem = () => {
+        deleteCartItem(id)
+      }
+      return (
+        <li className="cart-item">
+          <img className="cart-product-image" src={imageUrl} alt={title} />
+          <div className="cart-item-details-container">
+            <div className="cart-product-title-brand-container">
+              <p className="cart-product-title">{title}</p>
+              <p className="cart-product-brand">by {brand}</p>
+            </div>
+            <div className="cart-quantity-container">
+              <button type="button" className="quantity-controller-button">
+                <BsDashSquare color="#52606D" size={12} />
+              </button>
+              <p className="cart-quantity">{quantity}</p>
+              <button type="button" className="quantity-controller-button">
+                <BsPlusSquare color="#52606D" size={12} />
+              </button>
+            </div>
+            <div className="total-price-delete-container">
+              <p className="cart-total-price">Rs {price * quantity}/-</p>
+              <button
+                className="remove-button"
+                type="button"
+                onClick={onDeleteCartItem}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <button
+            className="delete-button"
+            type="button"
+            onClick={onDeleteCartItem}
+          >
+            <AiFillCloseCircle color="#616E7C" size={20} />
+          </button>
+        </li>
+      )
+    }}
+  </CartContext.Consumer>
+)
+
+export default CartItem
+
+//CartItem/index.css
+.cart-item {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0px 4px 16px 0px #7e858e29;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-item {
+    margin-bottom: 32px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cart-item {
+    padding-left: 36px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    padding-right: 48px;
+  }
+}
+
+.cart-product-image {
+  width: 96px;
+  height: 96px;
+  border-radius: 4px;
+}
+
+.cart-item-details-container {
+  margin-left: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-item-details-container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cart-product-title-brand-container {
+    width: 250px;
+  }
+}
+
+.cart-product-title {
+  color: #171f46;
+  font-family: 'Roboto';
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-product-title {
+    font-size: 16px;
+  }
+}
+
+.cart-product-brand {
+  color: #64748b;
+  font-family: 'Roboto';
+  font-size: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-product-brand {
+    font-size: 12px;
+  }
+}
+
+.cart-quantity-container {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controller-button {
+  padding: 0;
+}
+
+.cart-quantity {
+  color: #52606d;
+  font-family: 'Roboto';
+  font-size: 12px;
+  font-weight: 500;
+  margin: 8px;
+  line-height: 1.3;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-quantity {
+    font-size: 18px;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+.total-price-delete-container {
+  display: flex;
+  align-items: center;
+}
+
+.cart-total-price {
+  color: #0b69ff;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-width: 100px;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-total-price {
+    font-size: 18px;
+  }
+}
+
+.remove-button {
+  background-color: transparent;
+  color: #334155;
+  font-family: 'Roboto';
+  font-size: 10px;
+  line-height: 16px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .remove-button {
+    display: none;
+  }
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: 32px;
+}
+
+@media screen and (max-width: 767px) {
+  .delete-button {
+    display: none;
+  }
+}
+
+//EmptyCartView/index.js
+import {Link} from 'react-router-dom'
+
+import './index.css'
+
+const EmptyCartView = () => (
+  <div className="cart-empty-view-container">
+    <img
+      src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-empty-cart-img.png"
+      className="cart-empty-image"
+      alt="cart empty"
+    />
+    <h1 className="cart-empty-heading">Your Cart Is Empty</h1>
+
+    <Link to="/products">
+      <button type="button" className="shop-now-btn">
+        Shop Now
+      </button>
+    </Link>
+  </div>
+)
+
+export default EmptyCartView
+
+//EmptyCartView/index.css
+.cart-empty-view-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+}
+
+.cart-empty-image {
+  width: 180px;
+  height: 190px;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-empty-image {
+    width: 360px;
+    height: 380px;
+  }
+}
+
+.cart-empty-heading {
+  color: #1e293b;
+  font-family: 'Roboto';
+  font-size: 24px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-empty-heading {
+    font-size: 32px;
+  }
+}
+
+.shop-now-btn {
+  background-color: #0b69ff;
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 12px;
+  border-radius: 8px;
+  border: none;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+//NotFound/index.js
+import './index.css'
+
+const NotFound = () => (
+  <div className="not-found-container">
+    <img
+      src="https://assets.ccbp.in/frontend/react-js/not-found-blog-img.png"
+      alt="not found"
+      className="not-found-img"
+    />
+  </div>
+)
+
+export default NotFound
+
+//NotFound/index.css
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+.not-found-img {
+  width: 400px;
+}
